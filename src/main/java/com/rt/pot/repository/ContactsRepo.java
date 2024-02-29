@@ -11,6 +11,7 @@ import com.rt.pot.model.Contacts;
 @Repository
 public interface ContactsRepo extends JpaRepository<Contacts, Integer> {
 
+	public Contacts findByEmailId(String emailId);
 	boolean existsByEmailId(String emailId);
 
 	Contacts findAllByEmailId(String emailId);

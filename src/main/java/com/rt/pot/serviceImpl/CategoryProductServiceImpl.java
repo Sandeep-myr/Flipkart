@@ -18,6 +18,7 @@ import com.rt.pot.error.NoProductFoundWithThisName;
 import com.rt.pot.error.NotLogin;
 import com.rt.pot.model.Admin;
 import com.rt.pot.model.Category;
+import com.rt.pot.model.Contacts;
 import com.rt.pot.model.Manager;
 import com.rt.pot.model.OrderDetails;
 import com.rt.pot.model.OrderRecived;
@@ -44,8 +45,6 @@ import com.rt.pot.repository.OrderRepo;
 import com.rt.pot.repository.ProductReviewRepo;
 import com.rt.pot.repository.ProductsRepo;
 import com.rt.pot.service.ICategoryProductService;
-
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class CategoryProductServiceImpl implements ICategoryProductService {
@@ -83,6 +82,9 @@ public class CategoryProductServiceImpl implements ICategoryProductService {
 	@Override
 	public String addTheProduct(addReq addReq, String emailId) {// CategoryReq
 					Set<Category> categorySet = new HashSet<>();
+					
+			Contacts contact = contactsRepo.findByEmailId(emailId);
+			 admin = adminRepo.findByAdminContacts(contact);
 
 			categoryRepo.saveAll(this.addReqToCategoryAndProductEntityConvertor
 					.catogoryReqSetToCatogoryEntitySet(categorySet, addReq.getCategoryList()));

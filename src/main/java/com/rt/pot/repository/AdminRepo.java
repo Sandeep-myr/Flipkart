@@ -10,12 +10,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.rt.pot.model.Admin;
+import com.rt.pot.model.Contacts;
 
 import jakarta.transaction.Transactional;
 
 @Repository
 @Transactional
 public interface AdminRepo extends JpaRepository<Admin, Integer> {
+	
+	public Admin findByAdminContacts(Contacts contacts);
 
 	public List<Admin> findByIsApproved(String isApproved);
 
