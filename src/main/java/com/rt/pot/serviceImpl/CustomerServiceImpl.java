@@ -248,9 +248,11 @@ public class CustomerServiceImpl implements ICustomerService {
 	
 	@Override
 	public ResponseEntity<String> addToCart(String emailId, OrderRequest orderReq, Integer productId) throws DataGettingException {
+		
+		
 	    Customer customer = customerRepo.findByEmailIdIgnoreCase(emailId.toUpperCase());
 
-	    
+	   
 
 	    Product product = productsRepo.findById(productId).orElseThrow(() -> new DataGettingException("Product not found!"));
 
@@ -260,16 +262,19 @@ public class CustomerServiceImpl implements ICustomerService {
 
 	    addToCart.computeIfAbsent(customer.getEmailId(), k -> new ArrayList<>());
 
-	    addToCartDetails(product, orderReq.getProductQty(), customer.getEmailId());
+	    this.addToCartDetails(product, orderReq.getProductQty(), customer.getEmailId());
 
 	    System.out.println(addToCart);
 
 	    return ResponseEntity.ok("Product added to cart successfully.");
 	}
 
-	private void addToCartDetails(Product product, int productQty, String emailId) {
+	private  void addToCartDetails(Product product, int productQty, String emailId) {
+		System.out.println("bdn");
 	    boolean productExistsInCart = false;
 	    for (AddTocartDetails p : addToCart.get(emailId)) {
+	    	
+	    	System.out.println(product.getProductId()+" : "+p.getProduct().getProductId());
 	        if (p.getProduct().getProductId() == product.getProductId()) {
 	            productExistsInCart = true;
 	            System.out.println("Kart me same product add kar rahe ");
@@ -285,7 +290,7 @@ public class CustomerServiceImpl implements ICustomerService {
 	            p.setPayableAmount(payAmount);
 	            break;
 	        }
-	    }
+	     
 
 	    if (!productExistsInCart) {
 	        System.out.println("Kart me kuch hai lekin different product add kar rahe");
@@ -303,6 +308,7 @@ public class CustomerServiceImpl implements ICustomerService {
 	        addTocartDetails.setPayableAmount(payAmount);
 
 	        addToCart.get(emailId).add(addTocartDetails);
+	    }
 	    }
 	}
 
@@ -327,6 +333,7 @@ public class CustomerServiceImpl implements ICustomerService {
 				List<ProductCart> productCartList = new ArrayList<>();
 				for (AddTocartDetails product : addToCart.get(emailId)) {
 					AddToCartResponse.ProductCart productCart = addToCartResponse.new ProductCart();
+					productCart.setProductId(product.getProduct().getProductId());
 					productCart.setProductName(product.getProduct().getProductName());
 					productCart.setBrandName(product.getProduct().getBrandName());
 					productCart.setDescription(product.getProduct().getDescription());

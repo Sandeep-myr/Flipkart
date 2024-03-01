@@ -14,6 +14,7 @@ public class Order {
 
 		@Data
 		public class ProductCart {
+			private Integer productId;
 			private String productName;
 			private String brandName;
 			private String description;
