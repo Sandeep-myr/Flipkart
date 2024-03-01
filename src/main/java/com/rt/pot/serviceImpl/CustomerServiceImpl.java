@@ -270,12 +270,11 @@ public class CustomerServiceImpl implements ICustomerService {
 	}
 
 	private  void addToCartDetails(Product product, int productQty, String emailId) {
-		System.out.println("bdn");
+		
 	    boolean productExistsInCart = false;
 	    for (AddTocartDetails p : addToCart.get(emailId)) {
-	    	
-	    	System.out.println(product.getProductId()+" : "+p.getProduct().getProductId());
-	        if (p.getProduct().getProductId() == product.getProductId()) {
+	   
+	        if (p.getProduct().getProductId().equals(product.getProductId())) {
 	            productExistsInCart = true;
 	            System.out.println("Kart me same product add kar rahe ");
 	            p.setProductQty(productQty);
@@ -290,7 +289,7 @@ public class CustomerServiceImpl implements ICustomerService {
 	            p.setPayableAmount(payAmount);
 	            break;
 	        }
-	     
+	    }
 
 	    if (!productExistsInCart) {
 	        System.out.println("Kart me kuch hai lekin different product add kar rahe");
@@ -309,7 +308,9 @@ public class CustomerServiceImpl implements ICustomerService {
 
 	        addToCart.get(emailId).add(addTocartDetails);
 	    }
-	    }
+	 
+	    
+	    System.out.println(addToCart);
 	}
 
 	// ================================================================================================================
@@ -364,7 +365,7 @@ public class CustomerServiceImpl implements ICustomerService {
 		return new ResponseEntity<>(addToCartResponse, HttpStatus.OK);
 	}
 
-	// ===================================================================================
+	// ==================================================================================
 
 	// CHECK OUT THE ITEM AND PAY BILL AND UPDATE THE INVENTORY
 	@Transactional
